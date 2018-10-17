@@ -79,4 +79,26 @@ public class LivroDAO {
 
         return null;
     }
+
+    public List<Livro> getBasicInfo() {
+
+        try {
+            Connection connection = FabricaConexao.getConnection();
+            List<Livro> livros = new ArrayList<>();
+
+            ResultSet rs = connection.prepareStatement("SELECT titulo, AVG(classificacao) " +
+                    "FROM Livro INNER JOIN Classificacao C on Livro.ISBN = C.FK_Livro_ISBN " +
+                    "GROUP BY titulo").executeQuery();
+
+            while (rs.next())
+                livros.add(new Livro(rs.getString(1), rs.getFloat(2)));
+
+            return livros;
+
+        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

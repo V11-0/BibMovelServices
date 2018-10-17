@@ -14,7 +14,7 @@ import java.util.List;
  * Created by vinibrenobr11 on 11/10/18 at 23:46
  */
 
-@Path("/livro")
+@Path("/livros")
 public class Livros {
 
     @GET
@@ -24,6 +24,18 @@ public class Livros {
         LivroDAO dao = new LivroDAO();
 
         List<Livro> livros = dao.getAll();
+
+        return new Gson().toJson(livros);
+    }
+
+    @GET
+    @Path("/basic")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getBasicInfo() {
+
+        LivroDAO dao = new LivroDAO();
+
+        List<Livro> livros = dao.getBasicInfo();
 
         return new Gson().toJson(livros);
     }

@@ -21,6 +21,11 @@ public class Livro {
         this.genero = genero;
     }
 
+    public Livro(String titulo, float classificacaoMedia) {
+        this.titulo = titulo;
+        this.classificacaoMedia = classificacaoMedia;
+    }
+
     public String getTitulo() {
         return titulo;
     }
