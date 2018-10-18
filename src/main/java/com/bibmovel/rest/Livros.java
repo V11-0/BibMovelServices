@@ -19,24 +19,51 @@ import java.util.List;
 public class Livros {
 
     @GET
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll() {
 
         LivroDAO dao = new LivroDAO();
+        List<Livro> livros = null;
 
-        List<Livro> livros = dao.getAll();
+        try {
+            livros = dao.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new Gson().toJson(livros);
     }
 
     @GET
-    @Path("/basic")
+    @Path("/{isbn}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getLivro(@PathParam("isbn") String isbn) {
+
+        LivroDAO dao = new LivroDAO();
+        Livro livro = null;
+
+        try {
+            livro = dao.getLivro(isbn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new Gson().toJson(livro);
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getBasicInfo() {
 
         LivroDAO dao = new LivroDAO();
+        List<Livro> livros = null;
 
-        List<Livro> livros = dao.getBasicInfo();
+        try {
+            livros = dao.getBasicInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new Gson().toJson(livros);
     }

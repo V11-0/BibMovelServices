@@ -16,30 +16,27 @@ public class Usuarios {
 
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
-   @Produces(MediaType.APPLICATION_JSON)
-   public Usuario add(Usuario usuario) {
+   public Response add(Usuario usuario) {
 
        if (usuario.getNome() == null)
-           throw new WebApplicationException(Response.Status.BAD_REQUEST);
+           return Response.noContent().build();
 
        UsuarioDAO dao = new UsuarioDAO();
        dao.add(usuario);
 
-       return null;
+       return Response.ok(usuario).build();
    }
 
    @GET
-   @Produces(MediaType.APPLICATION_JSON)
-   @Path("/{login}/{senha}")
-   public String login(@PathParam("login") String login, @PathParam("senha") String senha) {
+   @Consumes(MediaType.APPLICATION_JSON)
+   public Response login(Usuario usuario) {
 
        UsuarioDAO dao = new UsuarioDAO();
-       Usuario usuario = new Usuario(login, senha);
 
        if (dao.login(usuario)) {
-           return new Gson().toJson(usuario);
+           return Response.accepted(usuario).build();
        }
 
-       return null;
+       return Response.status(404).build();
    }
 }

@@ -17,89 +17,32 @@ import java.util.List;
  */
 public class LivroDAO {
 
-    public List<Livro> getAll() {
+    public List<Livro> getAll() throws Exception {
 
-        try {
-            Connection connection = FabricaConexao.getConnection();
-            List<Livro> livros = new ArrayList<>();
+        Connection connection = FabricaConexao.getConnection();
+        List<Livro> livros = new ArrayList<>();
 
-            ResultSet rs = connection.prepareStatement("SELECT * FROM Livro").executeQuery();
+        ResultSet rs = connection.prepareStatement("SELECT * FROM Livro").executeQuery();
 
-            while (rs.next()) {
+        while (rs.next())
+            livros.add(getLivro(rs.getString("isbn")));
 
-                Livro livro = new Livro();
-                livro.setTitulo(rs.getString(1));
-                livro.setIsbn(rs.getString(2));
-                livro.setNomeArquivo(rs.getString(3));
-                livro.setGenero(rs.getString(4));
-
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Editora WHERE CNPJ = ?");
-                preparedStatement.setString(1, rs.getString(5));
-
-                ResultSet rs1 = preparedStatement.executeQuery();
-                rs1.next();
-
-                livro.setEditora(new Editora(rs1.getString(1), rs1.getString(2)));
-
-                preparedStatement = connection.prepareStatement("SELECT AVG(classificacao) FROM Classificacao" +
-                        " WHERE FK_Livro_ISBN = ?");
-
-                preparedStatement.setString(1, livro.getIsbn());
-                rs1 = preparedStatement.executeQuery();
-                rs1.next();
-
-                livro.setClassificacaoMedia(rs1.getFloat(1));
-
-                preparedStatement = connection.prepareStatement("SELECT * FROM Autor A INNER JOIN AutorLivro L on " +
-                        "A.id = L.FK_Autor_id WHERE L.FK_Livro_ISBN = ?");
-
-                preparedStatement.setString(1, livro.getIsbn());
-                rs1 = preparedStatement.executeQuery();
-
-                List<Autor> autores = new ArrayList<>();
-
-                while (rs1.next()) {
-
-                    Autor autor = new Autor(rs1.getString(1), rs1.getDate(2)
-                            , rs1.getString(3),rs1.getInt(4));
-
-                    autores.add(autor);
-                }
-
-                livro.setAutores(autores);
-
-                livros.add(livro);
-            }
-
-            return livros;
-
-        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return livros;
     }
 
-    public List<Livro> getBasicInfo() {
+    public List<Livro> getBasicInfo() throws Exception {
 
-        try {
-            Connection connection = FabricaConexao.getConnection();
-            List<Livro> livros = new ArrayList<>();
+        Connection connection = FabricaConexao.getConnection();
+        List<Livro> livros = new ArrayList<>();
 
-            ResultSet rs = connection.prepareStatement("SELECT titulo, AVG(classificacao) " +
-                    "FROM Livro LEFT JOIN Classificacao C on Livro.ISBN = C.FK_Livro_ISBN " +
-                    "GROUP BY titulo").executeQuery();
+        ResultSet rs = connection.prepareStatement("SELECT titulo, AVG(classificacao) " +
+                "FROM Livro LEFT JOIN Classificacao C on Livro.ISBN = C.FK_Livro_ISBN " +
+                "GROUP BY titulo").executeQuery();
 
-            while (rs.next())
-                livros.add(new Livro(rs.getString(1), rs.getFloat(2)));
+        while (rs.next())
+            livros.add(new Livro(rs.getString(1), rs.getFloat(2)));
 
-            return livros;
-
-        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return livros;
     }
 
     public void insert(Livro livro) throws Exception {
@@ -114,5 +57,61 @@ public class LivroDAO {
         statement.setString(5, livro.getEditora().getCnpj());
 
         statement.executeUpdate();
+    }
+
+    public Livro getLivro(String isbn) throws Exception {
+
+        Connection connection = FabricaConexao.getConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Livro WHERE isbn = ?");
+        preparedStatement.setString(1, isbn);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        Livro livro = new Livro();
+
+        if (rs.next()) {
+
+            livro.setTitulo(rs.getString(1));
+            livro.setIsbn(rs.getString(2));
+            livro.setNomeArquivo(rs.getString(3));
+            livro.setGenero(rs.getString(4));
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM Editora WHERE CNPJ = ?");
+            preparedStatement.setString(1, rs.getString(5));
+
+            rs = preparedStatement.executeQuery();
+
+            if (rs.next())
+                livro.setEditora(new Editora(rs.getString(1), rs.getString(2)));
+
+            preparedStatement = connection.prepareStatement("SELECT AVG(classificacao) FROM Classificacao" +
+                    " WHERE FK_Livro_ISBN = ?");
+
+            preparedStatement.setString(1, livro.getIsbn());
+            rs = preparedStatement.executeQuery();
+
+            if (rs.next())
+                livro.setClassificacaoMedia(rs.getFloat(1));
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM Autor A INNER JOIN AutorLivro L on " +
+                    "A.id = L.FK_Autor_id WHERE L.FK_Livro_ISBN = ?");
+
+            preparedStatement.setString(1, livro.getIsbn());
+            rs = preparedStatement.executeQuery();
+
+            List<Autor> autores = new ArrayList<>();
+
+            while (rs.next()) {
+
+                Autor autor = new Autor(rs.getString(1), rs.getDate(2)
+                        , rs.getString(3),rs.getInt(4));
+
+                autores.add(autor);
+            }
+
+            livro.setAutores(autores);
+        }
+
+        return livro;
     }
 }
