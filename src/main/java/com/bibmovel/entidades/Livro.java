@@ -14,11 +14,16 @@ public class Livro {
 
     public Livro() {}
 
-    public Livro(String titulo, String isbn, String nomeArquivo, String genero) {
+    public Livro(String titulo, String isbn, String nomeArquivo, String genero, Editora editora
+            , float classificacaoMedia, List<Autor> autores) {
+
         this.titulo = titulo;
         this.isbn = isbn;
         this.nomeArquivo = nomeArquivo;
         this.genero = genero;
+        this.editora = editora;
+        this.classificacaoMedia = classificacaoMedia;
+        this.autores = autores;
     }
 
     public Livro(String titulo, float classificacaoMedia) {

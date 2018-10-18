@@ -4,10 +4,11 @@ import com.bibmovel.dao.LivroDAO;
 import com.bibmovel.entidades.Livro;
 import com.google.gson.Gson;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -38,5 +39,24 @@ public class Livros {
         List<Livro> livros = dao.getBasicInfo();
 
         return new Gson().toJson(livros);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response add(Livro livro) {
+
+        LivroDAO dao = new LivroDAO();
+
+        if (livro == null) {
+            return Response.noContent().build();
+        } else {
+            try {
+                dao.insert(livro);
+                return Response.status(201).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Response.serverError().build();
+            }
+        }
     }
 }

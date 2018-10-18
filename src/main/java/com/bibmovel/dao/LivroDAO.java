@@ -87,7 +87,7 @@ public class LivroDAO {
             List<Livro> livros = new ArrayList<>();
 
             ResultSet rs = connection.prepareStatement("SELECT titulo, AVG(classificacao) " +
-                    "FROM Livro INNER JOIN Classificacao C on Livro.ISBN = C.FK_Livro_ISBN " +
+                    "FROM Livro LEFT JOIN Classificacao C on Livro.ISBN = C.FK_Livro_ISBN " +
                     "GROUP BY titulo").executeQuery();
 
             while (rs.next())
@@ -100,5 +100,19 @@ public class LivroDAO {
         }
 
         return null;
+    }
+
+    public void insert(Livro livro) throws Exception {
+
+        Connection conn = FabricaConexao.getConnection();
+        PreparedStatement statement = conn.prepareStatement("INSERT INTO Livro VALUES (?, ?, ?, ?, ?)");
+
+        statement.setString(1, livro.getTitulo());
+        statement.setString(2, livro.getIsbn());
+        statement.setString(3, livro.getNomeArquivo());
+        statement.setString(4, livro.getGenero());
+        statement.setString(5, livro.getEditora().getCnpj());
+
+        statement.executeUpdate();
     }
 }
