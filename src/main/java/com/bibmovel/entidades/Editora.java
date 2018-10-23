@@ -15,6 +15,10 @@ public class Editora {
         this.cnpj = cnpj;
     }
 
+    public Editora(String nome) {
+        this.nome = nome;
+    }
+
     public String getNome() {
         return nome;
     }

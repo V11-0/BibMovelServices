@@ -21,7 +21,13 @@ public class Usuario implements java.io.Serializable {
         this.senha = senha;
     }
 
-    public String getLogin() {
+	public Usuario(String login, String nome, String email) {
+		this.login = login;
+		this.nome = nome;
+		this.email = email;
+	}
+
+	public String getLogin() {
 		return login;
 	}
 

@@ -1,2 +1,6 @@
 .idea/
+out/
+src/main/java/com/bibmovel/rest/Testes.java
+src/test/
+target/
 BibMovel.iml

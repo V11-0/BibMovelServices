@@ -20,6 +20,10 @@ public class Autor {
         this.id = id;
     }
 
+    public Autor(String nome) {
+        this.nome = nome;
+    }
+
     public String getNome() {
         return nome;
     }

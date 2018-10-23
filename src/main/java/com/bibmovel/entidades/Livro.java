@@ -8,26 +8,25 @@ public class Livro {
     private String isbn;
     private String nomeArquivo;
 	private String genero;
+	private short anoPublicacao;
     private Editora editora;
     private float classificacaoMedia;
     private List<Autor> autores;
 
     public Livro() {}
 
-    public Livro(String titulo, String isbn, String nomeArquivo, String genero, Editora editora
-            , float classificacaoMedia, List<Autor> autores) {
-
+    public Livro(String titulo, String isbn, String nomeArquivo, String genero, short anoPublicacao) {
         this.titulo = titulo;
         this.isbn = isbn;
         this.nomeArquivo = nomeArquivo;
         this.genero = genero;
-        this.editora = editora;
-        this.classificacaoMedia = classificacaoMedia;
-        this.autores = autores;
+        this.anoPublicacao = anoPublicacao;
     }
 
-    public Livro(String titulo, float classificacaoMedia) {
+    public Livro(String titulo, String isbn, String nomeArquivo, float classificacaoMedia) {
         this.titulo = titulo;
+        this.isbn = isbn;
+        this.nomeArquivo = nomeArquivo;
         this.classificacaoMedia = classificacaoMedia;
     }
 
@@ -61,6 +60,14 @@ public class Livro {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+    public short getAnoPublicacao() {
+        return anoPublicacao;
+    }
+
+    public void setAnoPublicacao(short anoPublicacao) {
+        this.anoPublicacao = anoPublicacao;
     }
 
     public Editora getEditora() {

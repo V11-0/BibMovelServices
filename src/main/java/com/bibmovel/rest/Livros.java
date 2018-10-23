@@ -7,8 +7,7 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -23,12 +22,12 @@ public class Livros {
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll() {
 
-        LivroDAO dao = new LivroDAO();
         List<Livro> livros = null;
 
         try {
+            LivroDAO dao = new LivroDAO();
             livros = dao.getAll();
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -40,12 +39,12 @@ public class Livros {
     @Produces(MediaType.APPLICATION_JSON)
     public String getLivro(@PathParam("isbn") String isbn) {
 
-        LivroDAO dao = new LivroDAO();
         Livro livro = null;
 
         try {
+            LivroDAO dao = new LivroDAO();
             livro = dao.getLivro(isbn);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
 
@@ -56,12 +55,12 @@ public class Livros {
     @Produces(MediaType.APPLICATION_JSON)
     public String getBasicInfo() {
 
-        LivroDAO dao = new LivroDAO();
         List<Livro> livros = null;
 
         try {
+            LivroDAO dao = new LivroDAO();
             livros = dao.getBasicInfo();
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -72,18 +71,20 @@ public class Livros {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Livro livro) {
 
-        LivroDAO dao = new LivroDAO();
+        try {
 
-        if (livro == null) {
-            return Response.noContent().build();
-        } else {
-            try {
+            LivroDAO dao = new LivroDAO();
+
+            if (livro == null) {
+                return Response.noContent().build();
+            } else {
                 dao.insert(livro);
                 return Response.status(201).build();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Response.serverError().build();
             }
+
+        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+            return Response.serverError().build();
         }
     }
 }

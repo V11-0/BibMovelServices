@@ -2,7 +2,6 @@ package com.bibmovel.rest;
 
 import com.bibmovel.dao.UsuarioDAO;
 import com.bibmovel.entidades.Usuario;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +26,8 @@ public class Usuarios {
        return Response.ok(usuario).build();
    }
 
-   @GET
+   @POST
+   @Path("/login")
    @Consumes(MediaType.APPLICATION_JSON)
    public Response login(Usuario usuario) {
 
