@@ -14,7 +14,7 @@ import java.util.List;
  * Created by vinibrenobr11 on 11/10/18 at 23:46
  */
 
-@Path("/livros")
+@Path("/livro")
 public class Livros {
 
     @GET

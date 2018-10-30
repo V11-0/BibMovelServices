@@ -6,24 +6,34 @@ import com.bibmovel.entidades.Usuario;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 
 /**
  * Created by vinibrenobr11 on 16/10/18 at 19:03
  */
-@Path("/usuarios")
+@Path("/usuario")
 public class Usuarios {
 
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
    public Response add(Usuario usuario) {
 
-       if (usuario.getNome() == null)
+       if (usuario.getLogin() == null)
            return Response.noContent().build();
 
        UsuarioDAO dao = new UsuarioDAO();
-       dao.add(usuario);
 
-       return Response.ok(usuario).build();
+       try {
+
+           if (dao.add(usuario))
+               return Response.ok(usuario).build();
+           else
+               return Response.status(409).build();
+
+       } catch (SQLException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+           e.printStackTrace();
+           return Response.serverError().build();
+       }
    }
 
    @POST
@@ -33,10 +43,18 @@ public class Usuarios {
 
        UsuarioDAO dao = new UsuarioDAO();
 
-       if (dao.login(usuario)) {
-           return Response.accepted(usuario).build();
-       }
+       try {
 
-       return Response.status(404).build();
+           usuario = dao.login(usuario);
+
+           if (usuario != null)
+               return Response.ok(usuario).build();
+           else
+               return Response.status(404).build();
+
+       } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+           e.printStackTrace();
+           return Response.serverError().build();
+       }
    }
 }
