@@ -3,7 +3,9 @@ package com.bibmovel.rest;
 import com.bibmovel.dao.UsuarioDAO;
 import com.bibmovel.entidades.Usuario;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
@@ -31,7 +33,6 @@ public class Usuarios {
                return Response.status(409).build();
 
        } catch (SQLException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-           e.printStackTrace();
            return Response.serverError().build();
        }
    }
@@ -53,7 +54,6 @@ public class Usuarios {
                return Response.status(404).build();
 
        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
-           e.printStackTrace();
            return Response.serverError().build();
        }
    }
