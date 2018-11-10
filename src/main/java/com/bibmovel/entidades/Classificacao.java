@@ -4,12 +4,12 @@ public class Classificacao {
 
     private Usuario usuario;
     private Livro livro;
-    private float classificacao;
+    private Float classificacao;
     private String comentario;
 
     public Classificacao() {}
 
-    public Classificacao(Usuario usuario, Livro livro, float classificacao, String comentario) {
+    public Classificacao(Usuario usuario, Livro livro, Float classificacao, String comentario) {
         this.usuario = usuario;
         this.livro = livro;
         this.classificacao = classificacao;
@@ -32,11 +32,11 @@ public class Classificacao {
         this.livro = livro;
     }
 
-    public float getClassificacao() {
+    public Float getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(float classificacao) {
+    public void setClassificacao(Float classificacao) {
         this.classificacao = classificacao;
     }
 

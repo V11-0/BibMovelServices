@@ -35,15 +35,15 @@ public class Livros {
     }
 
     @GET
-    @Path("/{isbn}")
+    @Path("/{value}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getLivro(@PathParam("isbn") String isbn) {
+    public String getLivro(@PathParam("value") String valor, @QueryParam("column") String coluna) {
 
         Livro livro = null;
 
         try {
             LivroDAO dao = new LivroDAO();
-            livro = dao.getLivro(isbn);
+            livro = dao.getLivro(valor, coluna);
         } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

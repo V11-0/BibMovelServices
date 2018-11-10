@@ -23,7 +23,7 @@ public class UsuarioDAO {
         ResultSet rs = preparedStatement.executeQuery();
 
         if (rs.next()) {
-            usuario.setSenha("");
+            usuario.setSenha(null);
             usuario.setEmail(rs.getString(2));
             return usuario;
         } else

@@ -1,21 +1,19 @@
 package com.bibmovel.entidades;
 
-import java.util.List;
-
 public class Livro {
 
     private String titulo;
     private String isbn;
     private String nomeArquivo;
 	private String genero;
-	private short anoPublicacao;
-    private Editora editora;
-    private float classificacaoMedia;
-    private List<Autor> autores;
+	private Short anoPublicacao;
+    private String editora;
+    private Float classificacaoMedia;
+    private String autor;
 
     public Livro() {}
 
-    public Livro(String titulo, String isbn, String nomeArquivo, String genero, short anoPublicacao) {
+    public Livro(String titulo, String isbn, String nomeArquivo, String genero, Short anoPublicacao) {
         this.titulo = titulo;
         this.isbn = isbn;
         this.nomeArquivo = nomeArquivo;
@@ -23,10 +21,10 @@ public class Livro {
         this.anoPublicacao = anoPublicacao;
     }
 
-    public Livro(String titulo, String isbn, String nomeArquivo, float classificacaoMedia) {
+    public Livro(String titulo, String nomeArquivo, String autor, Float classificacaoMedia) {
         this.titulo = titulo;
-        this.isbn = isbn;
         this.nomeArquivo = nomeArquivo;
+        this.autor = autor;
         this.classificacaoMedia = classificacaoMedia;
     }
 
@@ -62,35 +60,35 @@ public class Livro {
         this.genero = genero;
     }
 
-    public short getAnoPublicacao() {
+    public Short getAnoPublicacao() {
         return anoPublicacao;
     }
 
-    public void setAnoPublicacao(short anoPublicacao) {
+    public void setAnoPublicacao(Short anoPublicacao) {
         this.anoPublicacao = anoPublicacao;
     }
 
-    public Editora getEditora() {
+    public String getEditora() {
         return editora;
     }
 
-    public void setEditora(Editora editora) {
+    public void setEditora(String editora) {
         this.editora = editora;
     }
 
-    public float getClassificacaoMedia() {
+    public Float getClassificacaoMedia() {
         return classificacaoMedia;
     }
 
-    public void setClassificacaoMedia(float classificacaoMedia) {
+    public void setClassificacaoMedia(Float classificacaoMedia) {
         this.classificacaoMedia = classificacaoMedia;
     }
 
-    public List<Autor> getAutores() {
-        return autores;
+    public String getAutor() {
+        return autor;
     }
 
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 }
