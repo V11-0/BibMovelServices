@@ -3,6 +3,13 @@ package com.bibmovel.dao;
 import com.bibmovel.entidades.Livro;
 import com.bibmovel.utils.FabricaConexao;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -97,5 +104,21 @@ public class LivroDAO {
                 livro.setClassificacaoMedia(rs.getFloat(1));
         }
         return livro;
+    }
+
+    public static File getCoverByPath(String path) throws IOException {
+
+        File book = new File("/home/vinibrenobr11/BibMovel/Books/" + path);
+
+        PDDocument pdDocument = PDDocument.load(book);
+        PDFRenderer renderer = new PDFRenderer(pdDocument);
+
+        File image_file = new File(path);
+        BufferedImage image = renderer.renderImage(0);
+        ImageIO.write(image, "png", image_file);
+
+        pdDocument.close();
+
+        return image_file;
     }
 }

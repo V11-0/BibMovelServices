@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -86,5 +88,23 @@ public class Livros {
             e.printStackTrace();
             return Response.serverError().build();
         }
+    }
+
+    @GET
+    @Path("cover/{path}")
+    @Produces("image/png")
+    public Response getCapa(@PathParam("path") String path) {
+
+        try {
+
+            File cover = LivroDAO.getCoverByPath(path);
+
+            return Response.ok(cover).build();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Response.serverError().build();
     }
 }

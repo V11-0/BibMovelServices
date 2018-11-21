@@ -10,12 +10,15 @@ import java.sql.*;
  */
 public class UsuarioDAO {
 
-    public Usuario login(Usuario usuario) throws ClassNotFoundException, SQLException, InstantiationException
-            , IllegalAccessException {
+    private Connection conn;
 
-        Connection connection = FabricaConexao.getConnection();
+    public UsuarioDAO() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        conn = FabricaConexao.getConnection();
+    }
 
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT login, email FROM Usuario WHERE " +
+    public Usuario login(Usuario usuario) throws SQLException {
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT login, email FROM Usuario WHERE " +
                 "login = ? AND senha = ?");
 
         preparedStatement.setString(1, usuario.getLogin());
@@ -25,23 +28,21 @@ public class UsuarioDAO {
         if (rs.next()) {
             usuario.setSenha(null);
             usuario.setEmail(rs.getString(2));
+
             return usuario;
         } else
             return null;
     }
 
-    public boolean add(Usuario usuario) throws SQLException, IllegalAccessException, InstantiationException
-            , ClassNotFoundException {
+    public boolean add(Usuario usuario) throws SQLException {
 
-        Connection connection = FabricaConexao.getConnection();
-
-        Statement statement = connection.createStatement();
+        Statement statement = conn.createStatement();
         ResultSet rs = statement.executeQuery("SELECT login from Usuario WHERE login = '" + usuario.getLogin() + "'");
 
         if (rs.next())
             return false;
 
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Usuario VALUES (?, ?, ?, ?)");
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO Usuario VALUES (?, ?, ?, ?)");
         preparedStatement.setString(1, usuario.getNome());
         preparedStatement.setString(2, usuario.getEmail());
         preparedStatement.setString(3, usuario.getSenha());
@@ -50,5 +51,23 @@ public class UsuarioDAO {
         preparedStatement.executeUpdate();
 
         return true;
+    }
+
+    public Usuario verify(Usuario google) throws SQLException {
+
+        PreparedStatement statement = conn.prepareStatement("SELECT login FROM Usuario WHERE login = ?");
+        statement.setString(1, google.getLogin());
+
+        ResultSet rs = statement.executeQuery();
+
+        if (rs.next())
+            return google;
+
+        statement = conn.prepareStatement("INSERT INTO Usuario (login) VALUES (?)");
+        statement.setString(1, google.getLogin());
+
+        statement.executeUpdate();
+
+        return google;
     }
 }

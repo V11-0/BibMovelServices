@@ -5,20 +5,17 @@ public class Livro {
     private String titulo;
     private String isbn;
     private String nomeArquivo;
-	private String genero;
-	private Short anoPublicacao;
+    private String genero;
+    private Short anoPublicacao;
     private String editora;
     private Float classificacaoMedia;
     private String autor;
 
-    public Livro() {}
+    public Livro() {
+    }
 
-    public Livro(String titulo, String isbn, String nomeArquivo, String genero, Short anoPublicacao) {
+    public Livro(String titulo) {
         this.titulo = titulo;
-        this.isbn = isbn;
-        this.nomeArquivo = nomeArquivo;
-        this.genero = genero;
-        this.anoPublicacao = anoPublicacao;
     }
 
     public Livro(String titulo, String nomeArquivo, String autor, Float classificacaoMedia) {

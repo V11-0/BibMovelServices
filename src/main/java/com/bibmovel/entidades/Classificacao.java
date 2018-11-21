@@ -7,13 +7,7 @@ public class Classificacao {
     private Float classificacao;
     private String comentario;
 
-    public Classificacao() {}
-
-    public Classificacao(Usuario usuario, Livro livro, Float classificacao, String comentario) {
-        this.usuario = usuario;
-        this.livro = livro;
-        this.classificacao = classificacao;
-        this.comentario = comentario;
+    public Classificacao() {
     }
 
     public Usuario getUsuario() {
