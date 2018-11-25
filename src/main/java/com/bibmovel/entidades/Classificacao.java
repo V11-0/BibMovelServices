@@ -1,6 +1,8 @@
 package com.bibmovel.entidades;
 
-public class Classificacao {
+import java.io.Serializable;
+
+public class Classificacao implements Serializable {
 
     private Usuario usuario;
     private Livro livro;

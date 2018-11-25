@@ -23,8 +23,7 @@ public class Usuarios {
     public Response add(Usuario usuario) {
 
         if (usuario.getLogin() == null)
-            return Response.noContent().build();
-
+            return Response.status(406).build();
 
         try {
             UsuarioDAO dao = new UsuarioDAO();
@@ -63,14 +62,14 @@ public class Usuarios {
     @Path("/google")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String verifyGoogleAccount(Usuario google) {
+    public Response verifyGoogleAccount(Usuario google) {
 
         try {
             UsuarioDAO dao = new UsuarioDAO();
-            return new Gson().toJson(dao.verify(google));
+            return Response.ok(dao.verify(google)).build();
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        return null;
+        return Response.serverError().build();
     }
 }

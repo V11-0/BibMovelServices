@@ -28,23 +28,11 @@ public class LivroDAO {
         conn = FabricaConexao.getConnection();
     }
 
-    public List<Livro> getAll() throws SQLException {
-
-        List<Livro> livros = new ArrayList<>();
-
-        ResultSet rs = conn.prepareStatement("SELECT ISBN FROM Livro").executeQuery();
-
-        while (rs.next())
-            livros.add(getLivro(rs.getString("isbn"), "isbn"));
-
-        return livros;
-    }
-
     public List<Livro> getBasicInfo() throws SQLException {
 
         List<Livro> livros = new ArrayList<>();
 
-        ResultSet rs = conn.prepareStatement("SELECT titulo, nomeArquivo, autor, AVG(classificacao) " +
+        ResultSet rs = conn.prepareStatement("SELECT titulo, nomeArquivo, autor, ROUND(AVG(classificacao), 2) " +
                 "FROM Livro L LEFT JOIN Classificacao C on L.ISBN = C.FK_Livro_ISBN " +
                 "GROUP BY titulo, nomeArquivo, autor").executeQuery();
 
@@ -108,7 +96,7 @@ public class LivroDAO {
 
     public static File getCoverByPath(String path) throws IOException {
 
-        File book = new File("/home/vinibrenobr11/BibMovel/Books/" + path);
+        File book = new File("/opt/bibmovel/Books/" + path);
 
         PDDocument pdDocument = PDDocument.load(book);
         PDFRenderer renderer = new PDFRenderer(pdDocument);

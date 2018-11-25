@@ -1,6 +1,8 @@
 package com.bibmovel.entidades;
 
-public class Livro {
+import java.io.Serializable;
+
+public class Livro implements Serializable {
 
     private String titulo;
     private String isbn;

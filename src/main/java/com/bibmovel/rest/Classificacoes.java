@@ -38,8 +38,8 @@ public class Classificacoes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addClassificacao(Classificacao classificacao) {
 
-        if (classificacao == null)
-            return Response.noContent().build();
+        if (classificacao.getLivro() == null || classificacao.getUsuario() == null)
+            return Response.status(406).build();
         else {
 
             try {

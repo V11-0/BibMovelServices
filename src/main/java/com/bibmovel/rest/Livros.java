@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,26 +21,9 @@ import java.util.List;
 public class Livros {
 
     @GET
-    @Path("/all")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getAll() {
-
-        List<Livro> livros = null;
-
-        try {
-            LivroDAO dao = new LivroDAO();
-            livros = dao.getAll();
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return new Gson().toJson(livros);
-    }
-
-    @GET
     @Path("/{value}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getLivro(@PathParam("value") String valor, @QueryParam("column") String coluna) {
+    public Response getLivro(@PathParam("value") String valor, @QueryParam("column") String coluna) {
 
         Livro livro = null;
 
@@ -50,7 +34,10 @@ public class Livros {
             e.printStackTrace();
         }
 
-        return new Gson().toJson(livro);
+        if ((livro != null ? livro.getIsbn() : null) == null)
+            return Response.status(404).build();
+
+        return Response.ok(livro).build();
     }
 
     @GET
@@ -77,15 +64,19 @@ public class Livros {
 
             LivroDAO dao = new LivroDAO();
 
-            if (livro == null) {
-                return Response.noContent().build();
-            } else {
+            if (livro == null || livro.getIsbn() == null)
+                return Response.status(406).build();
+
+            else {
                 dao.insert(livro);
-                return Response.status(201).build();
+                return Response.ok().build();
             }
 
         } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+
+            if (e instanceof SQLException)
+                return Response.status(409).build();
+
             return Response.serverError().build();
         }
     }
@@ -98,6 +89,9 @@ public class Livros {
         try {
 
             File cover = LivroDAO.getCoverByPath(path);
+
+            if (cover == null)
+                return Response.status(404).build();
 
             return Response.ok(cover).build();
 

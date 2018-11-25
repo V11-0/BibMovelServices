@@ -1,6 +1,8 @@
 package com.bibmovel.entidades;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
 
     private String login;
     private String nome;
@@ -9,6 +11,9 @@ public class Usuario {
 
     public Usuario(String login) {
         this.login = login;
+    }
+
+    public Usuario() {
     }
 
     public String getLogin() {
