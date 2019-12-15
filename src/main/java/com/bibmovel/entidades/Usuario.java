@@ -13,9 +13,6 @@ public class Usuario implements Serializable {
         this.login = login;
     }
 
-    public Usuario() {
-    }
-
     public String getLogin() {
         return login;
     }

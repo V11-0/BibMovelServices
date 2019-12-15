@@ -2,7 +2,6 @@ package com.bibmovel.dao;
 
 import com.bibmovel.entidades.Livro;
 import com.bibmovel.utils.FabricaConexao;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -96,7 +95,7 @@ public class LivroDAO {
 
     public static File getCoverByPath(String path) throws IOException {
 
-        File book = new File("/opt/bibmovel/Books/" + path);
+        File book = new File("/srv/bibmovel/Books/" + path);
 
         PDDocument pdDocument = PDDocument.load(book);
         PDFRenderer renderer = new PDFRenderer(pdDocument);
