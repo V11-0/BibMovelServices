@@ -2,4 +2,4 @@
 out/
 src/test/
 target/
-BibMovel.iml
+*.iml
