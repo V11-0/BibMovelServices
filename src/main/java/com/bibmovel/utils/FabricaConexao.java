@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public abstract class FabricaConexao {
 
     private static final String HOST = "localhost";
-    private static final String USER = "root";
+    private static final String USER = "admin";
     private static final String PASS = "1234";
     private static final String DATABASE = "BibMovel";
     private static final String URL = "jdbc:mysql://" + HOST + "/" + DATABASE + "?useSSL=false";
