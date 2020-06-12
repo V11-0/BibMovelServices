@@ -1,7 +1,7 @@
-package com.bibmovel.dao;
+package com.bibmovel.controller;
 
-import com.bibmovel.entidades.Livro;
-import com.bibmovel.utils.FabricaConexao;
+import com.bibmovel.models.Livro;
+import com.bibmovel.utils.ConnectionFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -19,12 +19,12 @@ import java.util.List;
 /**
  * Created by vinibrenobr11 on 11/10/18 at 23:29
  */
-public class LivroDAO {
+public class LivroController {
 
     private Connection conn;
 
-    public LivroDAO() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        conn = FabricaConexao.getConnection();
+    public LivroController() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        conn = ConnectionFactory.getConnection();
     }
 
     public List<Livro> getBasicInfo() throws SQLException {

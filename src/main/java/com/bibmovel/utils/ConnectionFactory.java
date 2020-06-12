@@ -7,7 +7,7 @@ import java.sql.SQLException;
 /**
  * Created by vinibrenobr11 on 11/10/18 at 23:22
  */
-public abstract class FabricaConexao {
+public abstract class ConnectionFactory {
 
     private static final String HOST = "localhost";
     private static final String USER = "admin";

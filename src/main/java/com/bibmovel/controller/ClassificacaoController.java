@@ -1,9 +1,9 @@
-package com.bibmovel.dao;
+package com.bibmovel.controller;
 
-import com.bibmovel.entidades.Classificacao;
-import com.bibmovel.entidades.Livro;
-import com.bibmovel.entidades.Usuario;
-import com.bibmovel.utils.FabricaConexao;
+import com.bibmovel.models.Classificacao;
+import com.bibmovel.models.Livro;
+import com.bibmovel.models.Usuario;
+import com.bibmovel.utils.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,14 +15,14 @@ import java.util.List;
 /**
  * Created by vinibrenobr11 on 14/11/18 at 17:16
  */
-public class ClassificacaoDAO {
+public class ClassificacaoController {
 
     private Connection connection;
 
-    public ClassificacaoDAO() throws ClassNotFoundException, SQLException
+    public ClassificacaoController() throws ClassNotFoundException, SQLException
             , InstantiationException, IllegalAccessException {
 
-        this.connection = FabricaConexao.getConnection();
+        this.connection = ConnectionFactory.getConnection();
     }
 
     public List<Classificacao> getClassificacoesByLivro(String isbn) throws SQLException {
@@ -58,7 +58,7 @@ public class ClassificacaoDAO {
                 "INSERT INTO Classificacao VALUES (?, ?, ?, ?)"
         );
 
-        statement.setString(1, classificacao.getUsuario().getLogin());
+        statement.setString(1, classificacao.getUsuario().getUsuario());
         statement.setString(2, classificacao.getLivro().getIsbn());
         statement.setFloat(3, classificacao.getClassificacao());
         statement.setString(4, classificacao.getComentario());

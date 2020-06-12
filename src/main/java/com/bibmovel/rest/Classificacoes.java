@@ -1,7 +1,7 @@
 package com.bibmovel.rest;
 
-import com.bibmovel.dao.ClassificacaoDAO;
-import com.bibmovel.entidades.Classificacao;
+import com.bibmovel.controller.ClassificacaoController;
+import com.bibmovel.models.Classificacao;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -24,8 +24,8 @@ public class Classificacoes {
         List<Classificacao> classificacoes = null;
 
         try {
-            ClassificacaoDAO classificacaoDAO = new ClassificacaoDAO();
-            classificacoes = classificacaoDAO.getClassificacoesByLivro(isbn);
+            ClassificacaoController classificacaoController = new ClassificacaoController();
+            classificacoes = classificacaoController.getClassificacoesByLivro(isbn);
 
         } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class Classificacoes {
         else {
 
             try {
-                ClassificacaoDAO dao = new ClassificacaoDAO();
+                ClassificacaoController dao = new ClassificacaoController();
                 dao.addClassificacao(classificacao);
 
                 return Response.ok(classificacao).build();

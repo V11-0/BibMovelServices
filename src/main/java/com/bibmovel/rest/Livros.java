@@ -1,7 +1,7 @@
 package com.bibmovel.rest;
 
-import com.bibmovel.dao.LivroDAO;
-import com.bibmovel.entidades.Livro;
+import com.bibmovel.controller.LivroController;
+import com.bibmovel.models.Livro;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -27,7 +27,7 @@ public class Livros {
         Livro livro = null;
 
         try {
-            LivroDAO dao = new LivroDAO();
+            LivroController dao = new LivroController();
             livro = dao.getLivro(valor, coluna);
         } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class Livros {
         List<Livro> livros = null;
 
         try {
-            LivroDAO dao = new LivroDAO();
+            LivroController dao = new LivroController();
             livros = dao.getBasicInfo();
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class Livros {
 
         try {
 
-            LivroDAO dao = new LivroDAO();
+            LivroController dao = new LivroController();
 
             if (livro == null || livro.getIsbn() == null)
                 return Response.status(406).build();
@@ -87,7 +87,7 @@ public class Livros {
 
         try {
 
-            File cover = LivroDAO.getCoverByPath(path);
+            File cover = LivroController.getCoverByPath(path);
 
             if (cover == null)
                 return Response.status(404).build();

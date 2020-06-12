@@ -1,24 +1,24 @@
-package com.bibmovel.entidades;
+package com.bibmovel.models;
 
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
 
-    private String login;
+    private String usuario;
     private String nome;
     private String email;
     private String senha;
 
-    public Usuario(String login) {
-        this.login = login;
+    public Usuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getNome() {

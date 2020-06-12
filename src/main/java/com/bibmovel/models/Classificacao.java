@@ -1,4 +1,4 @@
-package com.bibmovel.entidades;
+package com.bibmovel.models;
 
 import java.io.Serializable;
 

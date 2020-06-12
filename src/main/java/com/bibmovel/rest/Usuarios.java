@@ -1,7 +1,7 @@
 package com.bibmovel.rest;
 
-import com.bibmovel.dao.UsuarioDAO;
-import com.bibmovel.entidades.Usuario;
+import com.bibmovel.controller.UsuarioController;
+import com.bibmovel.models.Usuario;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -21,16 +21,18 @@ public class Usuarios {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Usuario usuario) {
 
-        if (usuario.getLogin() == null)
-            return Response.status(406).build();
+        if (usuario.getUsuario() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         try {
-            UsuarioDAO dao = new UsuarioDAO();
+            UsuarioController controller = new UsuarioController();
 
-            if (dao.add(usuario))
+            if (controller.add(usuario)) {
                 return Response.ok(usuario).build();
-            else
-                return Response.status(409).build();
+            } else {
+                return Response.status(Response.Status.CONFLICT).build();
+            }
 
         } catch (SQLException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             return Response.serverError().build();
@@ -43,7 +45,7 @@ public class Usuarios {
     public Response login(Usuario usuario) {
 
         try {
-            UsuarioDAO dao = new UsuarioDAO();
+            UsuarioController dao = new UsuarioController();
 
             usuario = dao.login(usuario);
 
@@ -64,7 +66,7 @@ public class Usuarios {
     public Response verifyGoogleAccount(Usuario google) {
 
         try {
-            UsuarioDAO dao = new UsuarioDAO();
+            UsuarioController dao = new UsuarioController();
             return Response.ok(dao.verify(google)).build();
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
