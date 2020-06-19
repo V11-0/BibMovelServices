@@ -9,9 +9,20 @@ public class Usuario implements Serializable {
     private String email;
     private String senha;
 
-    public Usuario(String usuario) {
+    public Usuario(String usuario, String nome, String email, String senha) {
         this.usuario = usuario;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
     }
+
+    public Usuario(String usuario, String email, String senha) {
+        this.usuario = usuario;
+        this.email = email;
+        this.senha = senha;
+    }
+
+    public Usuario() {}
 
     public String getUsuario() {
         return usuario;

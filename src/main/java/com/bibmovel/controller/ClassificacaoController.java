@@ -39,14 +39,15 @@ public class ClassificacaoController {
         List<Classificacao> classificacoes = new ArrayList<>();
 
         while (rs.next()) {
-
+            System.out.println();
+            /*
             Classificacao classificacao = new Classificacao();
             classificacao.setUsuario(new Usuario(rs.getString(1)));
             classificacao.setLivro(new Livro(rs.getString(2)));
             classificacao.setClassificacao(rs.getFloat(3));
             classificacao.setComentario(rs.getString(4));
 
-            classificacoes.add(classificacao);
+            classificacoes.add(classificacao);*/
         }
 
         return classificacoes;

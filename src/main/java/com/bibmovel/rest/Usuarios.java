@@ -2,6 +2,8 @@ package com.bibmovel.rest;
 
 import com.bibmovel.controller.UsuarioController;
 import com.bibmovel.models.Usuario;
+import com.bibmovel.models.requests.UsuarioPostRequest;
+import com.bibmovel.values.Internals;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -19,23 +21,31 @@ public class Usuarios {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(Usuario usuario) {
+    public Response add(UsuarioPostRequest usuarioRequest) {
 
-        if (usuario.getUsuario() == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        if (usuarioRequest.getOperationKey().equals(Internals.generalKey)) {
 
-        try {
-            UsuarioController controller = new UsuarioController();
+            Usuario usuario = usuarioRequest.getUsuario();
 
-            if (controller.add(usuario)) {
-                return Response.ok(usuario).build();
-            } else {
-                return Response.status(Response.Status.CONFLICT).build();
+            if (usuario.getUsuario() == null) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
 
-        } catch (SQLException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-            return Response.serverError().build();
+            try {
+                UsuarioController controller = new UsuarioController();
+
+                if (controller.add(usuario)) {
+                    return Response.created(null).build();
+                } else {
+                    return Response.status(Response.Status.CONFLICT).build();
+                }
+
+            } catch (SQLException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                e.printStackTrace();
+                return Response.serverError().build();
+            }
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
 

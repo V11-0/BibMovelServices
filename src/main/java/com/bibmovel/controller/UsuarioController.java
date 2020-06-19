@@ -22,8 +22,9 @@ public class UsuarioController {
 
     public boolean add(Usuario usuario) throws SQLException {
 
-        PreparedStatement statement = conn.prepareStatement("SELECT id, usuario FROM Usuario WHERE usuario = ?");
+        PreparedStatement statement = conn.prepareStatement("SELECT id FROM Usuario WHERE usuario = ? OR email = ?");
         statement.setString(1, usuario.getUsuario());
+        statement.setString(2, usuario.getEmail());
 
         ResultSet rs = statement.executeQuery();
 
@@ -31,11 +32,13 @@ public class UsuarioController {
             return false;
         }
 
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO Usuario VALUES (?, ?, ?, ?)");
-        preparedStatement.setString(1, usuario.getNome());
-        preparedStatement.setString(2, usuario.getEmail());
-        preparedStatement.setString(3, usuario.getSenha());
-        preparedStatement.setString(4, usuario.getUsuario());
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO Usuario " +
+                "(usuario, nome, email, senha) VALUES (?, ?, ?, ?)");
+
+        preparedStatement.setString(1, usuario.getUsuario());
+        preparedStatement.setString(2, usuario.getNome());
+        preparedStatement.setString(3, usuario.getEmail());
+        preparedStatement.setString(4, usuario.getSenha());
 
         preparedStatement.executeUpdate();
 
