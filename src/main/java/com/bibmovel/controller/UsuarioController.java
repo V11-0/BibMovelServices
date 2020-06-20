@@ -1,8 +1,13 @@
 package com.bibmovel.controller;
 
+import com.bibmovel.models.Sessao;
 import com.bibmovel.models.Usuario;
 import com.bibmovel.utils.ConnectionFactory;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.*;
 
 /**
@@ -10,13 +15,76 @@ import java.sql.*;
  */
 public class UsuarioController {
 
-    private Connection conn;
+    private final Connection conn;
 
     public UsuarioController() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         conn = ConnectionFactory.getConnection();
     }
 
-    public Usuario login(Usuario usuario) throws SQLException {
+    public Sessao login(Usuario usuario) throws SQLException, NoSuchAlgorithmException {
+
+        String field = usuario.getUsuario() == null? "email" : "usuario";
+        String value = usuario.getUsuario() == null? usuario.getEmail() : usuario.getUsuario();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id FROM Usuario WHERE "
+                + field + " = ? AND senha = ?");
+
+        preparedStatement.setString(1, value);
+        preparedStatement.setString(2, usuario.getSenha());
+
+        ResultSet rs = preparedStatement.executeQuery();
+        int id;
+
+        if (rs.next()) {
+            id = rs.getInt(1);
+            rs.close();
+
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            SecureRandom random = new SecureRandom();
+
+            byte[] bytes = new byte[16];
+            random.nextBytes(bytes);
+
+            byte[] digest = md.digest(bytes);
+            String hash_code = DatatypeConverter.printHexBinary(digest);
+
+            preparedStatement.close();
+            preparedStatement = conn.prepareStatement(
+                    "INSERT INTO Sessao (id_usuario, hash_code) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, hash_code);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Falha ao iniciar sessao");
+            }
+
+            int id_sessao;
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id_sessao = generatedKeys.getInt(1);
+                }
+                else {
+                    throw new SQLException("Creating session failed, no ID obtained.");
+                }
+            }
+
+            preparedStatement.close();
+            preparedStatement = conn.prepareStatement(
+                    "SELECT id, id_usuario, hash_code, data_inicio FROM Sessao WHERE id = ?");
+
+            preparedStatement.setInt(1, id_sessao);
+
+            rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                return new Sessao(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getTimestamp(4));
+            }
+        }
+
         return null;
     }
 

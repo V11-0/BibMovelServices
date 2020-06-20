@@ -1,8 +1,9 @@
 package com.bibmovel.rest;
 
 import com.bibmovel.controller.UsuarioController;
+import com.bibmovel.models.Sessao;
 import com.bibmovel.models.Usuario;
-import com.bibmovel.models.requests.UsuarioPostRequest;
+import com.bibmovel.models.requests.UsuarioRequest;
 import com.bibmovel.values.Internals;
 
 import javax.ws.rs.Consumes;
@@ -11,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 /**
@@ -21,7 +23,7 @@ public class Usuarios {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(UsuarioPostRequest usuarioRequest) {
+    public Response add(UsuarioRequest usuarioRequest) {
 
         if (usuarioRequest.getOperationKey().equals(Internals.generalKey)) {
 
@@ -52,20 +54,29 @@ public class Usuarios {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(Usuario usuario) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(UsuarioRequest usuarioRequest) {
 
-        try {
-            UsuarioController dao = new UsuarioController();
+        if (usuarioRequest.getOperationKey().equals(Internals.generalKey)) {
+            try {
+                UsuarioController dao = new UsuarioController();
+                Usuario usuario = usuarioRequest.getUsuario();
 
-            usuario = dao.login(usuario);
+                Sessao sessao = dao.login(usuario);
 
-            if (usuario != null)
-                return Response.ok(usuario).build();
-            else
-                return Response.status(404).build();
+                if (sessao != null) {
+                    return Response.ok(sessao).build();
+                } else {
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+                }
 
-        } catch (SQLException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-            return Response.serverError().build();
+            } catch (IllegalAccessException | InstantiationException e) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException e) {
+                return Response.serverError().build();
+            }
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
 

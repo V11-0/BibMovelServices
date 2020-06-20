@@ -5,17 +5,17 @@ import com.bibmovel.models.Usuario;
 /**
  * Created by vinibrenobr11 on 16/06/2020 at 16:11
  */
-public class UsuarioPostRequest {
+public class UsuarioRequest {
 
     String operationKey;
     Usuario usuario;
 
-    public UsuarioPostRequest(String operationKey, Usuario usuario) {
+    public UsuarioRequest(String operationKey, Usuario usuario) {
         this.operationKey = operationKey;
         this.usuario = usuario;
     }
 
-    public UsuarioPostRequest() {
+    public UsuarioRequest() {
     }
 
     public String getOperationKey() {

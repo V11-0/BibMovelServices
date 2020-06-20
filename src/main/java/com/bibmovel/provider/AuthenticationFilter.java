@@ -47,10 +47,14 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
             String encodedKey = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
-            String key = new String(Base64.getDecoder().decode(encodedKey));
+            if (encodedKey.matches("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")) {
+                String key = new String(Base64.getDecoder().decode(encodedKey));
 
-            if (!key.equals(Internals.authKey)) {
-                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+                if (!key.equals(Internals.authKey)) {
+                    requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+                }
+            } else {
+                requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).build());
             }
         }
     }
