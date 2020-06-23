@@ -9,6 +9,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by vinibrenobr11 on 16/10/18 at 19:07
@@ -21,7 +25,7 @@ public class UsuarioController {
         conn = ConnectionFactory.getConnection();
     }
 
-    public Sessao login(Usuario usuario) throws SQLException, NoSuchAlgorithmException {
+    public Sessao login(Usuario usuario, List<String> deviceInfo) throws SQLException, NoSuchAlgorithmException {
 
         String field = usuario.getUsuario() == null? "email" : "usuario";
         String value = usuario.getUsuario() == null? usuario.getEmail() : usuario.getUsuario();
@@ -48,12 +52,22 @@ public class UsuarioController {
             byte[] digest = md.digest(bytes);
             String hash_code = DatatypeConverter.printHexBinary(digest);
 
+            String uuid = null;
+            String name = null;
+            if (deviceInfo != null) {
+                uuid = deviceInfo.get(0);
+                name = deviceInfo.get(1);
+            }
+
             preparedStatement.close();
             preparedStatement = conn.prepareStatement(
-                    "INSERT INTO Sessao (id_usuario, hash_code) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+                    "INSERT INTO Sessao (id_usuario, hash_code, device_uuid, device_name) VALUES (?, ?, ?, ?)"
+                        , Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, hash_code);
+            preparedStatement.setString(3, uuid);
+            preparedStatement.setString(4, name);
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -74,14 +88,21 @@ public class UsuarioController {
 
             preparedStatement.close();
             preparedStatement = conn.prepareStatement(
-                    "SELECT id, id_usuario, hash_code, data_inicio FROM Sessao WHERE id = ?");
+                    "SELECT id, hash_code, data_inicio FROM Sessao WHERE id = ?");
 
             preparedStatement.setInt(1, id_sessao);
 
             rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                return new Sessao(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getTimestamp(4));
+
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+                calendar.setTimeInMillis(rs.getTimestamp(3).getTime());
+
+                SimpleDateFormat sdf;
+                sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
+                return new Sessao(rs.getInt(1), rs.getString(2), sdf.format(calendar.getTime()));
             }
         }
 

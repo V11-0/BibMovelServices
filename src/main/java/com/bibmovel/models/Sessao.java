@@ -1,6 +1,6 @@
 package com.bibmovel.models;
 
-import java.sql.Timestamp;
+import java.util.Calendar;
 
 /**
  * Created by vinibrenobr11 on 20/06/2020 at 15:32
@@ -8,13 +8,19 @@ import java.sql.Timestamp;
 public class Sessao {
 
     private final int id;
-    private final int id_usuario;
+    private int id_usuario;
     private final String hash_code;
-    private final Timestamp data_inicio;
+    private final String data_inicio;
 
-    public Sessao(int id, int id_usuario, String hash_code, Timestamp data_inicio) {
+    public Sessao(int id, int id_usuario, String hash_code, String data_inicio) {
         this.id = id;
         this.id_usuario = id_usuario;
+        this.hash_code = hash_code;
+        this.data_inicio = data_inicio;
+    }
+
+    public Sessao(int id, String hash_code, String data_inicio) {
+        this.id = id;
         this.hash_code = hash_code;
         this.data_inicio = data_inicio;
     }
@@ -31,7 +37,7 @@ public class Sessao {
         return hash_code;
     }
 
-    public Timestamp getData_inicio() {
+    public String getData_inicio() {
         return data_inicio;
     }
 }

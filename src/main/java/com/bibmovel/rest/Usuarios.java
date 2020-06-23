@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by vinibrenobr11 on 16/10/18 at 19:03
@@ -61,8 +62,9 @@ public class Usuarios {
             try {
                 UsuarioController dao = new UsuarioController();
                 Usuario usuario = usuarioRequest.getUsuario();
+                List<String> device = usuarioRequest.getDeviceInfo();
 
-                Sessao sessao = dao.login(usuario);
+                Sessao sessao = dao.login(usuario, device);
 
                 if (sessao != null) {
                     return Response.ok(sessao).build();
