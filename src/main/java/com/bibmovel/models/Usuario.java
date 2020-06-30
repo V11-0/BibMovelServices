@@ -16,10 +16,10 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public Usuario(String usuario, String email, String senha) {
+    public Usuario(String usuario, String nome, String email) {
         this.usuario = usuario;
+        this.nome = nome;
         this.email = email;
-        this.senha = senha;
     }
 
     public Usuario() {}

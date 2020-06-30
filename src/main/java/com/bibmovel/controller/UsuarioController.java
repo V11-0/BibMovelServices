@@ -10,6 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -21,11 +24,11 @@ public class UsuarioController {
 
     private final Connection conn;
 
-    public UsuarioController() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public UsuarioController() {
         conn = ConnectionFactory.getConnection();
     }
 
-    public Sessao login(Usuario usuario, List<String> deviceInfo) throws SQLException, NoSuchAlgorithmException {
+    public Sessao login(Usuario usuario, List<String> deviceInfo, String ip) throws SQLException, NoSuchAlgorithmException {
 
         String field = usuario.getUsuario() == null? "email" : "usuario";
         String value = usuario.getUsuario() == null? usuario.getEmail() : usuario.getUsuario();
@@ -61,13 +64,14 @@ public class UsuarioController {
 
             preparedStatement.close();
             preparedStatement = conn.prepareStatement(
-                    "INSERT INTO Sessao (id_usuario, hash_code, device_uuid, device_name) VALUES (?, ?, ?, ?)"
+                    "INSERT INTO Sessao (id_usuario, hash_code, device_uuid, device_name, ip) VALUES (?, ?, ?, ?, ?)"
                         , Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, hash_code);
             preparedStatement.setString(3, uuid);
             preparedStatement.setString(4, name);
+            preparedStatement.setString(5, ip);
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -88,7 +92,7 @@ public class UsuarioController {
 
             preparedStatement.close();
             preparedStatement = conn.prepareStatement(
-                    "SELECT id, hash_code, data_inicio FROM Sessao WHERE id = ?");
+                    "SELECT id, id_usuario, hash_code, data_inicio FROM Sessao WHERE id = ?");
 
             preparedStatement.setInt(1, id_sessao);
 
@@ -97,12 +101,12 @@ public class UsuarioController {
             if (rs.next()) {
 
                 Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
-                calendar.setTimeInMillis(rs.getTimestamp(3).getTime());
+                calendar.setTimeInMillis(rs.getTimestamp(4).getTime());
 
-                SimpleDateFormat sdf;
-                sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                String date = ZonedDateTime.ofInstant(calendar.toInstant()
+                        , ZoneOffset.systemDefault()).format(DateTimeFormatter.ISO_INSTANT);
 
-                return new Sessao(rs.getInt(1), rs.getString(2), sdf.format(calendar.getTime()));
+                return new Sessao(rs.getInt(1), rs.getInt(2), rs.getString(3), date);
             }
         }
 

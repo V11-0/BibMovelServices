@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @Path("/livro")
-public class Livros {
+public class LivroRest {
 
     @GET
     @Path("/{value}")

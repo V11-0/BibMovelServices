@@ -14,7 +14,7 @@ import java.util.List;
  * Created by vinibrenobr11 on 14/11/18 at 17:09
  */
 @Path("/classificacao")
-public class Classificacoes {
+public class ClassificacaoRest {
 
     @GET
     @Path("/{isbn}")
@@ -27,7 +27,7 @@ public class Classificacoes {
             ClassificacaoController classificacaoController = new ClassificacaoController();
             classificacoes = classificacaoController.getClassificacoesByLivro(isbn);
 
-        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -48,7 +48,7 @@ public class Classificacoes {
 
                 return Response.ok(classificacao).build();
 
-            } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

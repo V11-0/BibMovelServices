@@ -1,43 +1,63 @@
 package com.bibmovel.models;
 
-import java.util.Calendar;
-
 /**
  * Created by vinibrenobr11 on 20/06/2020 at 15:32
  */
 public class Sessao {
 
-    private final int id;
-    private int id_usuario;
-    private final String hash_code;
-    private final String data_inicio;
+    private int id;
+    private int idUsuario;
+    private String hashCode;
+    private String dataInicio;
+    private String deviceUUID;
 
-    public Sessao(int id, int id_usuario, String hash_code, String data_inicio) {
+    public Sessao(int id, int idUsuario, String hashCode, String dataInicio) {
         this.id = id;
-        this.id_usuario = id_usuario;
-        this.hash_code = hash_code;
-        this.data_inicio = data_inicio;
+        this.idUsuario = idUsuario;
+        this.hashCode = hashCode;
+        this.dataInicio = dataInicio;
     }
 
-    public Sessao(int id, String hash_code, String data_inicio) {
-        this.id = id;
-        this.hash_code = hash_code;
-        this.data_inicio = data_inicio;
+    public Sessao() {
     }
 
     public int getId() {
         return id;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public String getHash_code() {
-        return hash_code;
+    public String getHashCode() {
+        return hashCode;
     }
 
-    public String getData_inicio() {
-        return data_inicio;
+    public String getDataInicio() {
+        return dataInicio;
+    }
+
+    public String getDeviceUUID() {
+        return deviceUUID;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public void setHashCode(String hashCode) {
+        this.hashCode = hashCode;
+    }
+
+    public void setDataInicio(String dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public void setDeviceUUID(String deviceUUID) {
+        this.deviceUUID = deviceUUID;
     }
 }

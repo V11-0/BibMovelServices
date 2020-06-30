@@ -15,11 +15,15 @@ public abstract class ConnectionFactory {
     private static final String DATABASE = "BibMovel";
     private static final String URL = "jdbc:mysql://" + HOST + "/" + DATABASE + "?useSSL=false";
 
-    public static Connection getConnection() throws ClassNotFoundException, SQLException
-            , IllegalAccessException, InstantiationException {
+    public static Connection getConnection() {
 
-        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            return DriverManager.getConnection(URL, USER, PASS);
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
 
-        return DriverManager.getConnection(URL, USER, PASS);
+        return null;
     }
 }

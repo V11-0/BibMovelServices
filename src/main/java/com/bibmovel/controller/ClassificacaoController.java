@@ -19,9 +19,7 @@ public class ClassificacaoController {
 
     private Connection connection;
 
-    public ClassificacaoController() throws ClassNotFoundException, SQLException
-            , InstantiationException, IllegalAccessException {
-
+    public ClassificacaoController() {
         this.connection = ConnectionFactory.getConnection();
     }
 
