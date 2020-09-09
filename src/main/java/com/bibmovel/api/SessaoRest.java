@@ -1,4 +1,4 @@
-package com.bibmovel.rest;
+package com.bibmovel.api;
 
 import com.bibmovel.controller.SessaoController;
 import com.bibmovel.models.Sessao;
@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 /**
  * Created by vinibrenobr11 on 26/06/2020 at 16:46

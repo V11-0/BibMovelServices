@@ -1,4 +1,4 @@
-package com.bibmovel.rest;
+package com.bibmovel.api;
 
 import com.bibmovel.controller.LivroController;
 import com.bibmovel.models.Livro;

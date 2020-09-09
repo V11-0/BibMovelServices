@@ -33,11 +33,12 @@ public class UsuarioController {
         String field = usuario.getUsuario() == null? "email" : "usuario";
         String value = usuario.getUsuario() == null? usuario.getEmail() : usuario.getUsuario();
 
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id FROM Usuario WHERE "
-                + field + " = ? AND senha = ?");
+        PreparedStatement preparedStatement = 
+            conn.prepareStatement("SELECT id FROM Usuario WHERE ?? = ? AND senha = ?");
 
-        preparedStatement.setString(1, value);
-        preparedStatement.setString(2, usuario.getSenha());
+        preparedStatement.setString(1, field);
+        preparedStatement.setString(2, value);
+        preparedStatement.setString(3, usuario.getSenha());
 
         ResultSet rs = preparedStatement.executeQuery();
         int id;
@@ -115,7 +116,8 @@ public class UsuarioController {
 
     public boolean add(Usuario usuario) throws SQLException {
 
-        PreparedStatement statement = conn.prepareStatement("SELECT id FROM Usuario WHERE usuario = ? OR email = ?");
+        PreparedStatement statement = 
+            conn.prepareStatement("SELECT id FROM Usuario WHERE usuario = ? OR email = ?");
         statement.setString(1, usuario.getUsuario());
         statement.setString(2, usuario.getEmail());
 
@@ -125,8 +127,8 @@ public class UsuarioController {
             return false;
         }
 
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO Usuario " +
-                "(usuario, nome, email, senha) VALUES (?, ?, ?, ?)");
+        PreparedStatement preparedStatement = 
+            conn.prepareStatement("INSERT INTO Usuario (usuario, nome, email, senha) VALUES (?, ?, ?, ?)");
 
         preparedStatement.setString(1, usuario.getUsuario());
         preparedStatement.setString(2, usuario.getNome());

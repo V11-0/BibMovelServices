@@ -1,10 +1,8 @@
-package com.bibmovel.rest;
+package com.bibmovel.api;
 
-import com.bibmovel.controller.SessaoController;
 import com.bibmovel.controller.UsuarioController;
 import com.bibmovel.models.Sessao;
 import com.bibmovel.models.Usuario;
-import com.bibmovel.models.requests.SessaoRequest;
 import com.bibmovel.models.requests.UsuarioRequest;
 import com.bibmovel.values.Internals;
 

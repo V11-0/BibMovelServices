@@ -3,3 +3,7 @@ out/
 src/test/
 target/
 *.iml
+.vscode/
+.settings/
+.classpath
+.project
