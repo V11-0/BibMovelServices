@@ -30,15 +30,11 @@ public class UsuarioController {
 
     public Sessao login(Usuario usuario, List<String> deviceInfo, String ip) throws SQLException, NoSuchAlgorithmException {
 
-        String field = usuario.getUsuario() == null? "email" : "usuario";
-        String value = usuario.getUsuario() == null? usuario.getEmail() : usuario.getUsuario();
-
         PreparedStatement preparedStatement = 
-            conn.prepareStatement("SELECT id FROM Usuario WHERE ?? = ? AND senha = ?");
+            conn.prepareStatement("SELECT id FROM Usuario WHERE email = ? AND senha = ?");
 
-        preparedStatement.setString(1, field);
-        preparedStatement.setString(2, value);
-        preparedStatement.setString(3, usuario.getSenha());
+        preparedStatement.setString(1, usuario.getEmail());
+        preparedStatement.setString(2, usuario.getSenha());
 
         ResultSet rs = preparedStatement.executeQuery();
         int id;

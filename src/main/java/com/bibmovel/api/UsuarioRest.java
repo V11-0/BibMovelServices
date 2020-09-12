@@ -77,6 +77,7 @@ public class UsuarioRest {
                 }
 
             } catch (SQLException | NoSuchAlgorithmException e) {
+                e.printStackTrace();
                 return Response.serverError().build();
             }
         } else {
