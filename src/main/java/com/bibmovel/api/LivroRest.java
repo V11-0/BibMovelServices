@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created by vinibrenobr11 on 11/10/18 at 23:46
@@ -19,40 +18,20 @@ import java.util.List;
 @Path("/livro")
 public class LivroRest {
 
-    @GET
-    @Path("/{value}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getLivro(@PathParam("value") String valor, @QueryParam("column") String coluna) {
-
-        Livro livro = null;
-
-        try {
-            LivroController dao = new LivroController();
-            livro = dao.getLivro(valor, coluna);
-        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        if ((livro != null ? livro.getIsbn() : null) == null)
-            return Response.status(404).build();
-
-        return Response.ok(livro).build();
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("application/pdf")
+    public Response baixarLivro() {
+        // TODO
+        return null;
     }
 
-    @GET
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getBasicInfo() {
-
-        List<Livro> livros = null;
-
-        try {
-            LivroController dao = new LivroController();
-            livros = dao.getBasicInfo();
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return new Gson().toJson(livros);
+    public Response getLivros() {
+        // TODO
+        return null;
     }
 
     @POST
