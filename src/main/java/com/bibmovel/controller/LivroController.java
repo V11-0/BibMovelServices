@@ -31,15 +31,14 @@ public class LivroController {
 
         List<Livro> livros = new ArrayList<>();
 
-        ResultSet rs = conn.prepareStatement("SELECT titulo, nomeArquivo, autor, ROUND(AVG(classificacao), 2) " +
-                "FROM Livro L LEFT JOIN Classificacao C on L.ISBN = C.FK_Livro_ISBN " +
-                "GROUP BY titulo, nomeArquivo, autor").executeQuery();
+        ResultSet rs = conn.prepareStatement(
+            "SELECT l.id, l.titulo, l.path_arquivo, ROUND(AVG(c.classificacao), 1) FROM Livro l LEFT JOIN Classificacao c ON c.id_livro = l.id GROUP BY l.id"
+        ).executeQuery();
 
         Livro livro;
 
         while (rs.next()) {
-            livro = new Livro(rs.getString(1), rs.getString(2)
-                    , rs.getString(3), rs.getFloat(4));
+            livro = new Livro(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4));
 
             livros.add(livro);
         }

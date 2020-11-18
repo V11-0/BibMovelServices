@@ -7,4 +7,5 @@ public abstract class Internals {
 
     public static final String generalKey = "BibMovelv2@2020";
     public static final String authKey = "BIbMooOvElvFlU2@20²0";
+    public static final String bookPath = "/srv/bibmovel/books/";
 }

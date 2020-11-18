@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Livro implements Serializable {
 
+    private Integer id;
     private String titulo;
     private String isbn;
     private String nomeArquivo;
@@ -12,23 +13,41 @@ public class Livro implements Serializable {
     private String editora;
     private Float classificacaoMedia;
     private String autor;
-
+    private Integer idUsuario;
+    
     public Livro() {
     }
 
-    public Livro(String titulo) {
+    public Livro(Integer id, String titulo, String isbn, String nomeArquivo, String genero, Short anoPublicacao, String editora, Float classificacaoMedia, String autor, Integer idUsuario) {
+        this.id = id;
         this.titulo = titulo;
+        this.isbn = isbn;
+        this.nomeArquivo = nomeArquivo;
+        this.genero = genero;
+        this.anoPublicacao = anoPublicacao;
+        this.editora = editora;
+        this.classificacaoMedia = classificacaoMedia;
+        this.autor = autor;
+        this.idUsuario = idUsuario;
     }
 
-    public Livro(String titulo, String nomeArquivo, String autor, Float classificacaoMedia) {
+    public Livro(int id, String titulo, String nomeArquivo, float classificacaoMedia) {
+        this.id = id;
         this.titulo = titulo;
         this.nomeArquivo = nomeArquivo;
-        this.autor = autor;
         this.classificacaoMedia = classificacaoMedia;
     }
 
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getTitulo() {
-        return titulo;
+        return this.titulo;
     }
 
     public void setTitulo(String titulo) {
@@ -36,7 +55,7 @@ public class Livro implements Serializable {
     }
 
     public String getIsbn() {
-        return isbn;
+        return this.isbn;
     }
 
     public void setIsbn(String isbn) {
@@ -44,7 +63,7 @@ public class Livro implements Serializable {
     }
 
     public String getNomeArquivo() {
-        return nomeArquivo;
+        return this.nomeArquivo;
     }
 
     public void setNomeArquivo(String nomeArquivo) {
@@ -52,7 +71,7 @@ public class Livro implements Serializable {
     }
 
     public String getGenero() {
-        return genero;
+        return this.genero;
     }
 
     public void setGenero(String genero) {
@@ -60,7 +79,7 @@ public class Livro implements Serializable {
     }
 
     public Short getAnoPublicacao() {
-        return anoPublicacao;
+        return this.anoPublicacao;
     }
 
     public void setAnoPublicacao(Short anoPublicacao) {
@@ -68,7 +87,7 @@ public class Livro implements Serializable {
     }
 
     public String getEditora() {
-        return editora;
+        return this.editora;
     }
 
     public void setEditora(String editora) {
@@ -76,7 +95,7 @@ public class Livro implements Serializable {
     }
 
     public Float getClassificacaoMedia() {
-        return classificacaoMedia;
+        return this.classificacaoMedia;
     }
 
     public void setClassificacaoMedia(Float classificacaoMedia) {
@@ -84,10 +103,18 @@ public class Livro implements Serializable {
     }
 
     public String getAutor() {
-        return autor;
+        return this.autor;
     }
 
     public void setAutor(String autor) {
         this.autor = autor;
+    }
+
+    public Integer getIdUsuario() {
+        return this.idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

@@ -1,7 +1,11 @@
 package com.bibmovel.api;
 
 import com.bibmovel.controller.LivroController;
+import com.bibmovel.controller.SessaoController;
 import com.bibmovel.models.Livro;
+import com.bibmovel.models.Usuario;
+import com.bibmovel.models.requests.SessaoRequest;
+import com.bibmovel.values.Internals;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -10,6 +14,7 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by vinibrenobr11 on 11/10/18 at 23:46
@@ -19,19 +24,47 @@ import java.sql.SQLException;
 public class LivroRest {
 
     @POST
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces("application/pdf")
-    public Response baixarLivro() {
-        // TODO
+    public Response baixarLivro(@PathParam("id") int id) {
         return null;
     }
 
     @POST
+    @Path("/all")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLivros() {
-        // TODO
-        return null;
+    public Response getLivros(SessaoRequest request) {
+        
+        if (request.getOperationKey().equals(Internals.generalKey)) {
+         
+            SessaoController controller = new SessaoController();
+            Usuario usuario = new Usuario();
+
+            try {
+                usuario = controller.validate(request.getSessao());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            if (usuario.getUsuario() != null) {
+
+                try {
+                    LivroController dao = new LivroController();
+                    List<Livro> livros = dao.getBasicInfo();
+        
+                    return Response.ok(new Gson().toJson(livros)).build();
+        
+                } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+        
+                return Response.serverError().build();
+            }
+        }
+
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @POST
